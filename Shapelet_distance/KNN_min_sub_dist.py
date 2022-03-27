@@ -14,12 +14,8 @@ from sklearn.metrics.pairwise import paired_distances
 import numpy as np
 import itertools
 from itertools import permutations
-
-datasets_small = ['BeetleFly', 'BirdChicken', 'Coffee', 'Computers', 'DistalPhalanxOutlineCorrect', 'Earthquakes', 'ECG200', 
-                  'ECGFiveDays', 'GunPoint', 'Ham', 'Herring', 'Lightning2', 'MiddlePhalanxOutlineCorrect', 'ProximalPhalanxOutlineCorrect', 
-                  'ShapeletSim', 'SonyAIBORobotSurface1', 'SonyAIBORobotSurface2', 'Strawberry', 'ToeSegmentation1', 'ToeSegmentation2', 'Wine', 
-                  'WormsTwoClass', 'Chinatown', 'DodgerLoopGame', 'DodgerLoopWeekend', 'GunPointAgeSpan', 'GunPointMaleVersusFemale', 
-                  'GunPointOldVersusYoung', 'HouseTwenty', 'PowerCons', 'SemgHandGenderCh2']
+from scipy.spatial import distance
+datasets_small =[ 'ShapeletSim', 'SonyAIBORobotSurface1', 'Chinatown', 'DodgerLoopGame', 'DodgerLoopWeekend', 'ECGFiveDays', 'SonyAIBORobotSurface2', 'Coffee', 'ToeSegmentation2', 'ToeSegmentation1', 'HouseTwenty', 'GunPoint', 'Wine', 'Lightning2', 'Herring', 'ECG200', 'Ham', 'GunPointAgeSpan', 'GunPointMaleVersusFemale', 'GunPointOldVersusYoung', 'PowerCons', 'WormsTwoClass', 'Computers', 'SemgHandGenderCh2', 'Earthquakes', 'DistalPhalanxOutlineCorrect', 'MiddlePhalanxOutlineCorrect', 'ProximalPhalanxOutlineCorrect', 'Strawberry']
 #K(T1,T2)=K_s((s11,...,s1U), (s21,...,s2V))=min_{i,j}( min_dist(s1i,s2j) )
 def pairwise_min_shapelet(T1,T2,k=None):
     #T1,T2 should be lists of subsequences
@@ -32,16 +28,12 @@ def pairwise_min_shapelet(T1,T2,k=None):
     assert isinstance(T1[0][0],float)
     assert isinstance(T2[0][0],float)
     
-    c = list(itertools.product(T1, T2))
-    c=np.array(c)
-    dist_list=[]
-    dist_list = [np.linalg.norm(grp[0]-grp[1]) for grp in c]
-   
-    return min(dist_list)   
+    dist_mat=distance.cdist(T1, T2, 'euclidean') 
+    return np.min(dist_mat)   
 
 
 
-def subsequences1d(arr, m):
+def subsequences1d(arr, m=None):
     assert isinstance(arr,np.ndarray)
     assert isinstance(arr[0],float)
     if m==None:
