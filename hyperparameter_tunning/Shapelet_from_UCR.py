@@ -30,7 +30,7 @@ def extract_candidates(data, m, M):
     shapelets = []
     for series in data:
         n = len(series)
-        print(m,M,n)
+        #print(m,M,n)
         for l in range(m, M + 1):
             for i in range(0, n - l + 1):
                 shapelet = series[i:i + l]
@@ -134,9 +134,9 @@ def Shapelet_random(data, y_true, dist=old_distance, length=2,number_search=200,
     #M = int(np.log(max(lengths))) + 1
     m=length
     M=length
-    print('shaplet_random',m,M)
+    #print('shaplet_random',m,M)
     candidates = np.asarray(extract_candidates(data, m, M))
-    print('candidates',candidates)
+    #print('candidates',candidates)
     r = np.random.RandomState(seed)
     idx_candidates = r.choice(range(len(candidates)), size=number_search)
     candidates = candidates[idx_candidates]
